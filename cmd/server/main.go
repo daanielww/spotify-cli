@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/daanielww/spotify-cli/App"
+	"github.com/daanielww/spotify-cli/app"
 	"github.com/daanielww/spotify-cli/cmd/config"
 	"log"
 	"net/http"
