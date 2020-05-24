@@ -39,17 +39,12 @@ func (h *Handler) storeDataInS3 (res *spotifyclient.RequestResult) (error){
 		return err
 	}
 
-	zippedData, err := zipHelper(data)
-	if err != nil {
-		return err
-	}
-
 	bucket, key := "spotify-cli", "data/" + time.Now().String()
 
 	_, err = h.S3C.PutObject(&s3.PutObjectInput{
 		Bucket: &bucket,
 		Key:    &key,
-		Body:   bytes.NewReader(zippedData),
+		Body:   bytes.NewReader(data),
 	})
 
 	if err != nil {
