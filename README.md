@@ -1,6 +1,6 @@
 # Spotify-Cli
 
-service that aggregates data from the spotify API and stores it in AWS S3, the service is hosted in an EC2 instance.
+service that aggregates data from the spotify API and stores it in AWS S3, the service is hosted in an EC2 instance, will be moved to AWS Lambda in the near future.
 
 ## server
 Both a development a production server is provided under `cmd`
