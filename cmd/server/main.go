@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/daanielww/spotify-cli/app"
+	"fmt"
+	"github.com/daanielww/spotify-cli/api"
 	"github.com/daanielww/spotify-cli/cmd/config"
 	"log"
 	"net/http"
@@ -14,8 +15,10 @@ func main() {
 		log.Fatalln("error with config: ", err.Error())
 	}
 
-	h := app.Handler{c.Sc, c.S3C}
+	h := api.Handler{c.Sc, c.S3C}
 
-	http.HandleFunc("/", h.HandleRequest)
+	fmt.Println("starting server")
+	http.HandleFunc("/", h.HandleRequestPlaylistAlbum)
+	http.HandleFunc("/tracks", h.HandleRequestTracks)
 	http.ListenAndServe(":8080", nil)
 }

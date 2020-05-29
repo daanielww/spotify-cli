@@ -7,7 +7,8 @@ import (
 )
 
 type SpotifyClient interface {
-	SpotifyCombined() (*RequestResult, error)
+	SpotifyCombinedPlaylistAlbum() (*RequestResult, error)
+	GetTracks() ([]spotify.FullTrack, error)
 }
 
 type SpotifyStruct struct {
@@ -34,7 +35,7 @@ func GetSpotfiyClient(clientID, clientSecret string) (*SpotifyStruct, error) {
 	return &SpotifyStruct{&sc}, nil
 }
 
-func (sc *SpotifyStruct) SpotifyCombined() (*RequestResult, error) {
+func (sc *SpotifyStruct) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
 	playlists, err := sc.getFeaturedPlaylists()
 	if err != nil {
 		return nil, err
@@ -68,4 +69,13 @@ func (sc *SpotifyStruct) getNewAlbums() ([]spotify.SimpleAlbum, error) {
 	}
 
 	return release.Albums[:2], err
+}
+
+func (sc *SpotifyStruct) GetTracks() ([]spotify.FullTrack, error) {
+	searchResult, err := sc.Search("pop", spotify.SearchTypeTrack)
+	if err != nil {
+		return nil, err
+	}
+
+	return searchResult.Tracks.Tracks[:5], nil
 }

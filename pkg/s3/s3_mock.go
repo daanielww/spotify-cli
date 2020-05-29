@@ -20,7 +20,6 @@ func NewMockS3() *MockS3 {
 
 func (m *MockS3) PutObject(in *s3.PutObjectInput) (*s3.PutObjectOutput, error) {
 	key := *in.Key
-	fmt.Println("Putting Mock Object ", key)
 
 	byt, err := ioutil.ReadAll(in.Body)
 
@@ -30,6 +29,17 @@ func (m *MockS3) PutObject(in *s3.PutObjectInput) (*s3.PutObjectOutput, error) {
 
 	m.Objects[key] = byt
 	return &s3.PutObjectOutput{}, nil
+}
+
+func (m *MockS3) GetObject(in *s3.GetObjectInput) (*s3.GetObjectOutput, error) {
+	key := *in.Key
+
+	_, ok := m.Objects[key]
+	if !ok {
+		return nil, fmt.Errorf("object doesn't exist")
+	}
+
+	return &s3.GetObjectOutput{}, nil
 }
 
 

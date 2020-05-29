@@ -16,6 +16,9 @@ func main() {
 		log.Fatalf("couldn't get config: %v", err)
 	}
 
+	if c.IsDevelopment {
+		fmt.Println("connecting to local development server")
+	}
 	fmt.Println("making request to: ", c.Url)
 	resp, err := http.Get(c.Url)
 	if err != nil {
@@ -29,7 +32,6 @@ func main() {
 
 	var obj map[string]interface{}
 	json.Unmarshal(responseBody, &obj)
-	fmt.Println(obj)
 
 	f := colorjson.NewFormatter()
 	f.Indent = 4
