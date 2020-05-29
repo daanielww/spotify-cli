@@ -34,5 +34,14 @@ func (sc *MockSpotify) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
 }
 
 func (sc *MockSpotify) GetTracks() ([]spotify.FullTrack, error) {
-	return nil, nil
+	tracks := []spotify.FullTrack{
+		{
+			SimpleTrack: spotify.SimpleTrack{
+				Name: "Track_test",
+				ID:   "ID-5554",
+			},
+		},
+	}
+
+	return tracks, nil
 }
