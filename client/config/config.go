@@ -19,7 +19,7 @@ func GetConfiguration() (*Configuration, error) {
 	if c.IsDevelopment {
 		c.Url = "http://localhost:8080"
 	} else {
-		c.Url = "http://ec2-54-208-45-242.compute-1.amazonaws.com:8080"
+		c.Url = "http://ec2-100-26-155-186.compute-1.amazonaws.com:8080"
 	}
 
 	if c.GetTracks {
