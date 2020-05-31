@@ -7,8 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3iface"
 	spotifyclient "github.com/daanielww/spotify-cli/pkg/spotify-client"
-	"net/http"
-	"time"
 )
 
 type Handler struct {
@@ -16,31 +14,7 @@ type Handler struct {
 	S3C s3iface.S3API
 }
 
-// Handler for default endpoint - grabbing playlists and albums
-func (h *Handler) HandleRequestPlaylistAlbum(w http.ResponseWriter, r *http.Request){
-	s3Key := "playlist-album/" + time.Now().Format("2006.01.02 15:04:05")
-	bucket := "spotify-cli"
-	res, err := h.GetAndStorePlaylistsAndAlbums(s3Key, bucket)
-	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(res)
-}
-
-// Hanlder for endpoint that grabs tracks
-func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
-	s3Key := "tracks/" + time.Now().Format("2006.01.02 15:04:05")
-	bucket := "spotify-cli"
-	res, err := h.GetAndStoreTracks(s3Key, bucket)
-	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(res)
-}
+// API logic
 
 // Retrieves tracks and stores in S3
 func (h *Handler) GetAndStoreTracks(s3Key, s3Bucket string) (*spotifyclient.TrackRequestResult, error) {

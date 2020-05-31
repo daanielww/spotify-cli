@@ -17,7 +17,7 @@ func main() {
 
 	h := api.Handler{c.Sc, c.S3C}
 
-	fmt.Println("starting server")
+	fmt.Println("starting staging server")
 	http.HandleFunc("/", h.HandleRequestPlaylistAlbum)
 	http.HandleFunc("/tracks", h.HandleRequestTracks)
 	http.ListenAndServe(":8080", nil)
