@@ -15,17 +15,21 @@ type LambdaHandler struct {
 	*api.Handler
 }
 
-func (lh *LambdaHandler) HandleRequest(ctx context.Context) {
+func (lh *LambdaHandler) HandleRequest(ctx context.Context) (error) {
 
-	bucket := "spotify-cli-test"
+	bucket := "spotify-cli"
 	_, err := lh.GetAndStorePlaylistsAndAlbums("playlist-album/"+time.Now().Format("2006.01.02 15:04:05"), bucket)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error getting playlists, albums: ", err)
+		return err
 	}
 	_, err = lh.GetAndStoreTracks("tracks/"+time.Now().Format("2006.01.02 15:04:05"), bucket)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error getting tracks: ", err)
+		return err
 	}
+
+	return nil
 }
 
 func main() {
