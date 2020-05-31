@@ -15,6 +15,7 @@ type Configuration struct {
 	ClientSecret string
 }
 
+// Configuration for production environment
 func ProductionConfig() (*Configuration, error) {
 	c, err := getFlags()
 	if err != nil {
@@ -36,6 +37,7 @@ func ProductionConfig() (*Configuration, error) {
 	return c, nil
 }
 
+// Development configuration to be used when running locally
 func DevelopmentConfig() (*Configuration, error) {
 	c, err := getFlags()
 	if err != nil {
@@ -57,6 +59,7 @@ func DevelopmentConfig() (*Configuration, error) {
 	return c, nil
 }
 
+// Get cmd line arguments
 func getFlags() (*Configuration, error) {
 	c, err := parseFlags()
 	if err != nil {

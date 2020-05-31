@@ -2,6 +2,8 @@ package spotifyclient
 
 import "github.com/zmb3/spotify"
 
+// Mock Spotify client used for testing and for running locally/development
+
 type MockSpotify struct{}
 
 func (sc *MockSpotify) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {

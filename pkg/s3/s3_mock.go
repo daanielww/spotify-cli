@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 )
 
+// Mock AWS S3 client used for testing and for running locally/development
+
 type MockS3 struct {
 	s3iface.S3API
 	Objects map[string][]byte

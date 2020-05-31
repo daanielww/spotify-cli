@@ -24,6 +24,7 @@ func getAWSRegion() *string {
 	return &region
 }
 
+// Creating AWS S3 client
 func GetS3(stub bool) (s3iface.S3API, error) {
 	if stub {
 		return NewMockS3(), nil

@@ -10,6 +10,7 @@ type Configuration struct {
 	GetTracks bool
 }
 
+// Create configuration
 func GetConfiguration() (*Configuration, error) {
 	c, err := getFlags()
 	if err != nil {
@@ -29,6 +30,7 @@ func GetConfiguration() (*Configuration, error) {
 	return c, err
 }
 
+// Grab cmd line arguments
 func getFlags() (*Configuration, error) {
 	c, err := parseFlags()
 	if err != nil {

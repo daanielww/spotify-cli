@@ -17,6 +17,7 @@ type Handler struct {
 	S3C s3iface.S3API
 }
 
+// Handler for default endpoint - grabbing playlists and albums
 func (h *Handler) HandleRequestPlaylistAlbum(w http.ResponseWriter, r *http.Request){
 	s3Key := "playlist-album/" + time.Now().Format("2006.01.02 15:04:05")
 	res, err := h.getAndStorePlaylistsAndAlbums(s3Key)
@@ -28,6 +29,7 @@ func (h *Handler) HandleRequestPlaylistAlbum(w http.ResponseWriter, r *http.Requ
 	json.NewEncoder(w).Encode(res)
 }
 
+// Hanlder for endpoint that grabs tracks
 func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 	s3Key := "tracks/" + time.Now().Format("2006.01.02 15:04:05")
 	res, err := h.getAndStoreTracks(s3Key)
@@ -39,6 +41,7 @@ func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(res)
 }
 
+// Retrieves tracks and stores in S3
 func (h *Handler) getAndStoreTracks(s3Key string) ([]spotify.FullTrack, error) {
 	res, err := h.Sc.GetTracks()
 	if err != nil {
@@ -58,6 +61,7 @@ func (h *Handler) getAndStoreTracks(s3Key string) ([]spotify.FullTrack, error) {
 	return res, nil
 }
 
+// Retrieves playlists and albums and store them in S3
 func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.RequestResult, error) {
 	res, err := h.Sc.SpotifyCombinedPlaylistAlbum()
 	if err != nil {
@@ -77,6 +81,7 @@ func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.Re
 	return res, nil
 }
 
+// Function to store data in AWS S3
 func (h *Handler) storeDataInS3 (s3Key string, data []byte) (error){
 	bucket := "spotify-cli"
 	_, err := h.S3C.PutObject(&s3.PutObjectInput{
