@@ -16,7 +16,7 @@ func Test_getAndStorePlaylistAlbums(t *testing.T) {
 	}
 
 	key := "data/" + time.Now().Format("2006.01.02 15:04:05")
-	res, err := mockHandler.GetAndStorePlaylistsAndAlbums(key)
+	res, err := mockHandler.GetAndStorePlaylistsAndAlbums(key, "test-bucket")
 	assert.NoError(t, err)
 	assert.NotNil(t, res)
 
@@ -34,7 +34,7 @@ func Test_getAndStoreTracks(t *testing.T) {
 	}
 
 	key := "tracks/" + time.Now().Format("2006.01.02 15:04:05")
-	res, err := mockHandler.GetAndStoreTracks(key)
+	res, err := mockHandler.GetAndStoreTracks(key, "test-bucket")
 	assert.NoError(t, err)
 	assert.NotNil(t, res)
 
