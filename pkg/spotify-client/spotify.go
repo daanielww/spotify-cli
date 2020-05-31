@@ -7,17 +7,21 @@ import (
 )
 
 type SpotifyClient interface {
-	SpotifyCombinedPlaylistAlbum() (*RequestResult, error)
-	GetTracks() ([]spotify.FullTrack, error)
+	SpotifyCombinedPlaylistAlbum() (*AlbumsPlaylistRequestResult, error)
+	GetTracks() (*TrackRequestResult, error)
 }
 
 type SpotifyStruct struct {
 	*spotify.Client
 }
 
-type RequestResult struct {
+type AlbumsPlaylistRequestResult struct {
 	Playlists []spotify.SimplePlaylist `json:"playlists"`
 	Albums    []spotify.SimpleAlbum    `json:"albums"`
+}
+
+type TrackRequestResult struct {
+	Tracks []spotify.FullTrack `json:"tracks"`
 }
 
 func GetSpotfiyClient(clientID, clientSecret string) (*SpotifyStruct, error) {
@@ -35,7 +39,7 @@ func GetSpotfiyClient(clientID, clientSecret string) (*SpotifyStruct, error) {
 	return &SpotifyStruct{&sc}, nil
 }
 
-func (sc *SpotifyStruct) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
+func (sc *SpotifyStruct) SpotifyCombinedPlaylistAlbum() (*AlbumsPlaylistRequestResult, error) {
 	
 	playlists, err := sc.getFeaturedPlaylists()
 	if err != nil {
@@ -47,7 +51,7 @@ func (sc *SpotifyStruct) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) 
 		return nil, err
 	}
 
-	res := &RequestResult{
+	res := &AlbumsPlaylistRequestResult{
 		Playlists: playlists,
 		Albums:    albums,
 	}
@@ -72,11 +76,12 @@ func (sc *SpotifyStruct) getNewAlbums() ([]spotify.SimpleAlbum, error) {
 	return release.Albums[:2], err
 }
 
-func (sc *SpotifyStruct) GetTracks() ([]spotify.FullTrack, error) {
+func (sc *SpotifyStruct) GetTracks() (*TrackRequestResult, error) {
 	searchResult, err := sc.Search("pop", spotify.SearchTypeTrack)
 	if err != nil {
 		return nil, err
 	}
 
-	return searchResult.Tracks.Tracks[:5], nil
+	res := &TrackRequestResult{Tracks: searchResult.Tracks.Tracks[:5]}
+	return res, nil
 }

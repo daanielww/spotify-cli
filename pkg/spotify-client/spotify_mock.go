@@ -6,7 +6,7 @@ import "github.com/zmb3/spotify"
 
 type MockSpotify struct{}
 
-func (sc *MockSpotify) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
+func (sc *MockSpotify) SpotifyCombinedPlaylistAlbum() (*AlbumsPlaylistRequestResult, error) {
 	playlists := []spotify.SimplePlaylist{
 		{
 			Name:     "Playlist_test",
@@ -27,7 +27,7 @@ func (sc *MockSpotify) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
 		},
 	}
 
-	res := &RequestResult{
+	res := &AlbumsPlaylistRequestResult{
 		Playlists: playlists,
 		Albums: albums,
 	}
@@ -35,7 +35,7 @@ func (sc *MockSpotify) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
 	return res, nil
 }
 
-func (sc *MockSpotify) GetTracks() ([]spotify.FullTrack, error) {
+func (sc *MockSpotify) GetTracks() (*TrackRequestResult, error) {
 	tracks := []spotify.FullTrack{
 		{
 			SimpleTrack: spotify.SimpleTrack{
@@ -44,6 +44,6 @@ func (sc *MockSpotify) GetTracks() ([]spotify.FullTrack, error) {
 			},
 		},
 	}
-
-	return tracks, nil
+	res := &TrackRequestResult{Tracks: tracks}
+	return res, nil
 }

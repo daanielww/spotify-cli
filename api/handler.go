@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3iface"
 	spotifyclient "github.com/daanielww/spotify-cli/pkg/spotify-client"
-	"github.com/zmb3/spotify"
 	"net/http"
 	"time"
 )
@@ -42,7 +41,7 @@ func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 }
 
 // Retrieves tracks and stores in S3
-func (h *Handler) getAndStoreTracks(s3Key string) ([]spotify.FullTrack, error) {
+func (h *Handler) getAndStoreTracks(s3Key string) (*spotifyclient.TrackRequestResult, error) {
 	res, err := h.Sc.GetTracks()
 	if err != nil {
 		return nil, err
@@ -62,7 +61,7 @@ func (h *Handler) getAndStoreTracks(s3Key string) ([]spotify.FullTrack, error) {
 }
 
 // Retrieves playlists and albums and store them in S3
-func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.RequestResult, error) {
+func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.AlbumsPlaylistRequestResult, error) {
 	res, err := h.Sc.SpotifyCombinedPlaylistAlbum()
 	if err != nil {
 		return nil, err
