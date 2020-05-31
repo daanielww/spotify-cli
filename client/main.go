@@ -19,6 +19,7 @@ func main() {
 	if c.IsDevelopment {
 		fmt.Println("connecting to local development server")
 	}
+
 	fmt.Println("making request to: ", c.Url)
 	resp, err := http.Get(c.Url)
 	if err != nil {

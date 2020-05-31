@@ -36,6 +36,7 @@ func GetSpotfiyClient(clientID, clientSecret string) (*SpotifyStruct, error) {
 }
 
 func (sc *SpotifyStruct) SpotifyCombinedPlaylistAlbum() (*RequestResult, error) {
+	
 	playlists, err := sc.getFeaturedPlaylists()
 	if err != nil {
 		return nil, err

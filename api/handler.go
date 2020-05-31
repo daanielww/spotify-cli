@@ -25,10 +25,8 @@ func (h *Handler) HandleRequestPlaylistAlbum(w http.ResponseWriter, r *http.Requ
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
-
 
 func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 	s3Key := "tracks/" + time.Now().Format("2006.01.02 15:04:05")
@@ -38,7 +36,6 @@ func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 }
 
@@ -81,7 +78,6 @@ func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.Re
 }
 
 func (h *Handler) storeDataInS3 (s3Key string, data []byte) (error){
-
 	bucket := "spotify-cli"
 	_, err := h.S3C.PutObject(&s3.PutObjectInput{
 		Bucket: &bucket,
