@@ -19,7 +19,8 @@ type Handler struct {
 // Handler for default endpoint - grabbing playlists and albums
 func (h *Handler) HandleRequestPlaylistAlbum(w http.ResponseWriter, r *http.Request){
 	s3Key := "playlist-album/" + time.Now().Format("2006.01.02 15:04:05")
-	res, err := h.getAndStorePlaylistsAndAlbums(s3Key)
+	bucket := "spotify-cli"
+	res, err := h.GetAndStorePlaylistsAndAlbums(s3Key, bucket)
 	if err != nil {
 		http.Error(w, "Internal Server Error", 500)
 	}
@@ -31,7 +32,8 @@ func (h *Handler) HandleRequestPlaylistAlbum(w http.ResponseWriter, r *http.Requ
 // Hanlder for endpoint that grabs tracks
 func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 	s3Key := "tracks/" + time.Now().Format("2006.01.02 15:04:05")
-	res, err := h.getAndStoreTracks(s3Key)
+	bucket := "spotify-cli"
+	res, err := h.GetAndStoreTracks(s3Key, bucket)
 	if err != nil {
 		http.Error(w, "Internal Server Error", 500)
 	}
@@ -41,7 +43,7 @@ func (h *Handler) HandleRequestTracks(w http.ResponseWriter, r *http.Request){
 }
 
 // Retrieves tracks and stores in S3
-func (h *Handler) getAndStoreTracks(s3Key string) (*spotifyclient.TrackRequestResult, error) {
+func (h *Handler) GetAndStoreTracks(s3Key, s3Bucket string) (*spotifyclient.TrackRequestResult, error) {
 	res, err := h.Sc.GetTracks()
 	if err != nil {
 		return nil, err
@@ -52,7 +54,7 @@ func (h *Handler) getAndStoreTracks(s3Key string) (*spotifyclient.TrackRequestRe
 		return nil, err
 	}
 
-	err = h.storeDataInS3(s3Key, data)
+	err = h.storeDataInS3(s3Key, s3Bucket, data)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +63,7 @@ func (h *Handler) getAndStoreTracks(s3Key string) (*spotifyclient.TrackRequestRe
 }
 
 // Retrieves playlists and albums and store them in S3
-func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.AlbumsPlaylistRequestResult, error) {
+func (h *Handler) GetAndStorePlaylistsAndAlbums(s3Key, s3Bucket string) (*spotifyclient.AlbumsPlaylistRequestResult, error) {
 	res, err := h.Sc.SpotifyCombinedPlaylistAlbum()
 	if err != nil {
 		return nil, err
@@ -72,7 +74,7 @@ func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.Al
 		return nil, err
 	}
 
-	err = h.storeDataInS3(s3Key, data)
+	err = h.storeDataInS3(s3Key, s3Bucket, data)
 	if err != nil {
 		return nil, err
 	}
@@ -81,10 +83,10 @@ func (h *Handler) getAndStorePlaylistsAndAlbums(s3Key string) (*spotifyclient.Al
 }
 
 // Function to store data in AWS S3
-func (h *Handler) storeDataInS3 (s3Key string, data []byte) (error){
-	bucket := "spotify-cli"
+func (h *Handler) storeDataInS3 (s3Key, s3Bucket string, data []byte) (error){
+
 	_, err := h.S3C.PutObject(&s3.PutObjectInput{
-		Bucket: &bucket,
+		Bucket: &s3Bucket,
 		Key:    &s3Key,
 		Body:   bytes.NewReader(data),
 	})
