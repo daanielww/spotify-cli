@@ -28,7 +28,6 @@ A client is provided to access the local server and staging server
 
 use `go run client/main.go` to run the client. By default this will hit the staging server endpoint
 - by default it will hit the `playlist and albums` endpoint. If you wish to get the tracks provide the `tracks` flag to hit the tracks endpoint instead
-- provide the `development` flag to run the development client instead of the production one. The development client will interact with the development server
-
+- provide the `development` flag to hit the local server instead of staging.
 ## Purpose
 The aggregated data will be used for an AI project relating to song recommendations.
